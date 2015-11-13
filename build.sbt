@@ -1,3 +1,5 @@
+import Build._
+
 organization := "org.webjars"
 
 name := "swagger-ui-shai"
@@ -5,8 +7,6 @@ name := "swagger-ui-shai"
 version := "2.1.1"
 
 crossPaths := false
-
-lazy val gulp = taskKey[Unit]("Run the gulp build")
 
 gulp := { "gulp".! }
 
@@ -18,3 +18,6 @@ mappings in (Compile, packageBin) := {
   val webjarContentsDir = s"META-INF/resources/webjars/${name.value}/${version.value}"
   files pair rebase(distDir, webjarContentsDir)
 }
+
+// NOTE: `sbt publish` will NOT work unless you set the shaiIvyRepo key (see local.sbt.example)
+publishTo := Some(shaiIvyRepo.value)

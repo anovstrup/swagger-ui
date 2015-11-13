@@ -1,0 +1,11 @@
+import Build._
+
+username := "YOUR USERNAME"
+
+shaiIvyRepo := {
+  // TODO update keyFile to point to your local ssh key
+  // OR remove keyFile in the next two lines to be prompted for the password
+  val keyFile = file(Path.userHome.absolutePath) / ".ssh" / "id_rsa"
+  baseShaiIvyRepo as(username.value, keyFile)
+}
+
