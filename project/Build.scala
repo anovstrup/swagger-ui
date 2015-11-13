@@ -5,5 +5,5 @@ object Build {
   lazy val username = settingKey[String]("Username for publishing to the shai ivy repository")
   lazy val shaiIvyRepo = settingKey[Resolver]("SHAI ivy repository")
 
-  lazy val baseShaiIvyRepo = Resolver.ssh("shai-ivy-repo", "thebeast.shai.com", "/usr/ivy/repo")
+  lazy val baseShaiIvyRepo = Resolver.ssh("shai-ivy-repo", "thebeast.shai.com", "/usr/ivy/repo")(Resolver.ivyStylePatterns)
 }

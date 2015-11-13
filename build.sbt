@@ -19,5 +19,7 @@ mappings in (Compile, packageBin) := {
   files pair rebase(distDir, webjarContentsDir)
 }
 
+publishMavenStyle := false
+
 // NOTE: `sbt publish` will NOT work unless you set the shaiIvyRepo key (see local.sbt.example)
 publishTo := Some(shaiIvyRepo.value)
