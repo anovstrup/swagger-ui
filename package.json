@@ -1,12 +1,14 @@
 {
-  "name": "swagger-ui",
+  "name": "swagger-ui-shai",
   "author": "Tony Tam <fehguy@gmail.com>",
-  "contributors": [{
-    "name": "Mohsen Azimi",
-    "email": "me@azimi.me"
-  }],
+  "contributors": [
+    {
+      "name": "Mohsen Azimi",
+      "email": "me@azimi.me"
+    }
+  ],
   "description": "Swagger UI is a dependency-free collection of HTML, JavaScript, and CSS assets that dynamically generate beautiful documentation from a Swagger-compliant API",
-  "version": "2.1.1-M2",
+  "version": "2.1.1",
   "homepage": "http://swagger.io",
   "license": "Apache 2.0",
   "scripts": {
