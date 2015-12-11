@@ -4,7 +4,7 @@ organization := "org.webjars"
 
 name := "swagger-ui-shai"
 
-version := "2.1.1"
+version := "2.1.2-SNAPSHOT"
 
 crossPaths := false
 
