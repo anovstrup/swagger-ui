@@ -45,6 +45,7 @@
     margin-bottom: 0
 }
 
+/* don't want to set the background color #5c666f for 50% of the resources 
 @media (min-width: 992px) {
     .swagger-section #resources:before {
         content: "";
@@ -56,7 +57,7 @@
         position: absolute;
         z-index: -1
     }
-}
+} */
 
 .swagger-section .resource {
     margin: 0
@@ -85,13 +86,14 @@
     }
 }
 
+/* commented out to display two-column layout
 @media (min-width: 992px) {
     .swagger-section .operation > .content {
         float: left;
         width: 50%;
         padding: 0 10px
     }
-}
+} */
 
 @media (min-width: 1400px) {
     .swagger-section .operation > .content {
@@ -99,12 +101,13 @@
     }
 }
 
+/* commented out to display two-column layout
 @media (min-width: 992px) {
     .swagger-section .operation > .samples {
         float: left;
         width: 50%
     }
-}
+} */
 
 .swagger-section h2.operation-title {
     display: block;
@@ -364,10 +367,11 @@
 
 @media (min-width: 992px) {
     .swagger-section .operations .model-signature h4 {
-        color: #fff;
+        /*color: #fff;   commented out because the background color is 100% white for the resources.  used to be #5c666f for 50% of the resources */
+        /* commented out to keep h4 style the same 
         text-transform: uppercase;
         letter-spacing: .08em;
-        font-size: 14px
+        font-size: 14px */
     }
 }
 
@@ -883,7 +887,7 @@
 
 @media (min-width: 992px) {
     .swagger-section .operations h4 {
-        box-shadow: none;
+        box-shadow: none; 
         cursor: default
     }
 }
@@ -908,7 +912,7 @@
 
 @media (min-width: 992px) {
     .swagger-section .operations h4:after {
-        display: none
+       /* display: none commented out because we want to show the icon to expand / collapse */
     }
 }
 
@@ -1088,7 +1092,7 @@
 
 @media (min-width: 992px) {
     .swagger-section .sticky-nav.fixed {
-        width: 290px;
+        width: 320px; /* changed from 290px */
         height: 100%;
         overflow-y: auto
     }
@@ -1096,7 +1100,7 @@
 
 @media (min-width: 1400px) {
     .swagger-section .sticky-nav.fixed {
-        width: 320px
+        width: 350px /* changed from 320px */
     }
 }
 
@@ -1195,7 +1199,7 @@
 @media (min-width: 992px) {
     .swagger-section .sticky-nav [data-navigator] .item {
         color: #5c666f;
-        padding: 9px 9px 9px 40px;
+        padding: 9px 9px 9px 35px; /* changed left padding from 40px to 35px */
         font-size: 14px;
         background: #f3f3f4
     }
@@ -1203,6 +1207,7 @@
     .swagger-section .sticky-nav [data-navigator] .item:active, .swagger-section .sticky-nav [data-navigator] .item:hover {
         color: #8c9299
     }
+    
 }
 
 .swagger-section .sticky-nav [data-navigator] .item[data-tg-switch]:after {
@@ -1466,7 +1471,7 @@ body {
 
 @media (min-width: 992px) {
     .swagger-section #swagger_sidebar {
-        width: 290px;
+        width: 320px;  /* changed from 290px */
         position: absolute;
         left: 0;
         top: 0;
@@ -1478,20 +1483,20 @@ body {
 
 @media (min-width: 1400px) {
     .swagger-section #swagger_sidebar {
-        width: 320px
+        width: 350px /* changed from 320px */
     }
 }
 
 @media (min-width: 992px) {
     .swagger-section #resources_container {
         width: 100%;
-        padding-left: 290px
+        padding-left: 320px /* changed from 290px */
     }
 }
 
 @media (min-width: 1400px) {
     .swagger-section #resources_container {
-        padding-left: 320px
+        padding-left: 350px /* changed from 320px */
     }
 }
 
@@ -1601,11 +1606,12 @@ body {
 }
 
 @media (min-width: 992px) {
-    .swagger-section #resources.samples-collapsed {
-        width: 130%;
+    .swagger-section #resources {
+        width: 100%; /* changed from 130% to 100%  */
     }
 
-    .swagger-section #resources.samples-collapsed a.toggle-samples .circle-icon:before {
+   /* no longer showing a.toggle-samples 
+   .swagger-section #resources.samples-collapsed a.toggle-samples .circle-icon:before {
         content: '\E0F8';
         font-family: budicon-font !important;
         font-style: normal !important;
@@ -1620,11 +1626,12 @@ body {
 
     .swagger-section #resources.samples-collapsed .samples > * {
         display: none
-    }
+    } */
 }
 
 @media (min-width: 1400px) {
-    .swagger-section #resources.samples-collapsed {
+    /* removed class name samples-collapsed */
+    .swagger-section #resources {
         width: 100%
     }
 

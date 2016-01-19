@@ -6,7 +6,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
   events: {
     'submit .sandbox': 'submitOperation',
     'click .submit': 'submitOperation',
-    'click  a.toggle-samples': 'toggleSamples'
+//    'click  a.toggle-samples': 'toggleSamples'
 //    'mouseenter .api-ic': 'mouseEnter',
 //    'mouseout .api-ic': 'mouseExit'
   },
@@ -699,7 +699,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     }
   },
 
-  toggleSamples: function (e) {
+  /*toggleSamples: function (e) {
     function o(t) {
       if ("self" === t) {
         var n = $(window).scrollTop();
@@ -720,6 +720,6 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       r.removeClass("is-collapsing");
       o(t)
     }, 500)
-  }
+  } */
 
 });
