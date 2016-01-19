@@ -173,7 +173,9 @@
     display: table-cell
 }
 
-.swagger-section .heading .http_method a {
+
+.swagger-section .heading .http_method a,
+#swagger_sidebar .http_method {
     color: #fff;
     text-transform: uppercase;
     font-size: 11px;
@@ -189,19 +191,19 @@
     color: #838991
 }
 
-.swagger-section .operation.get .http_method a, .swagger-section .operation.get .http_method span {
+.swagger-section .operation.get .http_method a, .swagger-section .operation.get .http_method span, #swagger_sidebar .http_method.get  {
     background: #44c7f4
 }
 
-.swagger-section .operation.post .http_method a, .swagger-section .operation.post .http_method span {
+.swagger-section .operation.post .http_method a, .swagger-section .operation.post .http_method span, #swagger_sidebar .http_method.post {
     background: #01b48f
 }
 
-.swagger-section .operation.delete .http_method a, .swagger-section .operation.delete .http_method span {
+.swagger-section .operation.delete .http_method a, .swagger-section .operation.delete .http_method span, #swagger_sidebar .http_method.delete {
     background: red
 }
 
-.swagger-section .operation.patch .http_method a, .swagger-section .operation.patch .http_method span {
+.swagger-section .operation.patch .http_method a, .swagger-section .operation.patch .http_method span, #swagger_sidebar .http_method.patch {
     background: #ff9a57
 }
 
@@ -1716,7 +1718,7 @@ body {
     text-decoration: none
 }
 
-.swagger-section .swagger-ui-wrap h1 a:hover, .swagger-section .swagger-ui-wrap h2 a:hover, .swagger-section .swagger-ui-wrap h3 a:hover, .swagger-section .swagger-ui-wrap h4 a:hover, .swagger-section .swagger-ui-wrap h5 a:hover, .swagger-section .swagger-ui-wrap h6 a:hover {
+.swagger-section .swagger-ui-wrap h1 a:hover, .swagger-section .swagger-ui-wrap h2 a:hover, .swagger-section .swagger-ui-wrap h3 a:hover, .swagger-section .swagger-ui-wrap h4 a:hover, .swagger-section .swagger-ui-wrap h5 a:hover, .swagger-section .swagger-ui-wrap h6 a:hover, #swagger_sidebar .item .http_method:hover {
     text-decoration: underline
 }
 

@@ -17,6 +17,7 @@ SwaggerUi.Views.SidebarHeaderView = Backbone.View.extend({
       var item = this.model.operationsArray[i].operation;
       item.nickname = this.model.operationsArray[i].nickname;
       item.parentId = this.model.operation.parentId;
+      item.method = this.model.operationsArray[i].method;
       this.addSidebarItem(item, i);
     }
 
@@ -38,15 +39,20 @@ SwaggerUi.Views.SidebarHeaderView = Backbone.View.extend({
   },
 
   clickSidebarItem: function (e) {
-
     var elem = $(e.target);
-    var eln = $("#" + elem.attr("data-endpoint"));
-
+    if (elem.is("span")) {
+       e.stopPropagation();
+       // set the target of the event to the parent element 
+       e.target = elem.parent().get();
+       this.clickSidebarItem(e);
+    }
+    
     if (elem.is(".item")) {
+      var eln = $("#" + elem.attr("data-endpoint"));
       scroll(elem.attr("data-endpoint"));
       setSelected(elem);
       updateUrl(eln.find(".path a").first().attr("href"))
-    }
+    } 
 
     /* scroll */
     function scroll(elem) {
