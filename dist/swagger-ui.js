@@ -445,7 +445,7 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
     + escapeExpression(lambda(((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.version : stack1), depth0))
     + "\n";
 },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div id=\"swagger_sidebar\">\n    <div class=\"sticky-nav-placeholder\">\n        <div class=\"sticky-nav\">\n            <div class=\"mobile-nav\">\n                <span class=\"select-label\">API Reference: </span><span data-selected-value></span>\n            </div>\n\n            <div class=\"token-generator hide\">\n                <span data-close class=\"icon-budicon-471\"></span>\n                <label for=\"input-api-token\">Url</label>\n                <input type=\"text\" autocorrect=\"off\" class=\"form-control\" id=\"input_baseUrl\"\n                       placeholder=\"http://example.com/api\">\n\n                <div class=\"scope-selector\">\n                    <label for=\"scopes\">Token</label>\n\n                    <div class=\"area controls\">\n                        <input type=\"text\" autocorrect=\"off\" class=\"form-control\" id=\"input_apiKey\"\n                               placeholder=\"Enter api key or token\">\n                    </div>\n\n                    <div class=\"area cta\">\n                        <div data-add-scope id=\"explore\" class=\"btn\"><span class=\"icon-budicon-519\"></span>\n                        </div>\n                    </div>\n                </div>\n\n            </div>\n            <div data-navigator>\n                <div data-resource=\"\" label=\"Tools\">\n                    <div class=\"item\" data-tg-switch=\"\">Swagger resource <span class=\"status\"></span></div>\n                </div>\n                <div id=\"resources_nav\">\n                </div>\n            </div>\n\n            <p class=\"changes-disclaimer\">\n                <span class='info' id='api_info'>\n";
+  var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression, buffer = "<div id=\"swagger_sidebar\">\n    <div class=\"sticky-nav-placeholder\">\n        <div class=\"sticky-nav\">\n            <div class=\"mobile-nav\">\n                <span class=\"select-label\">API Reference: </span><span data-selected-value></span>\n            </div>\n\n            <div data-navigator>\n                <div data-resource=\"\" label=\"Tools\">\n                    <div class=\"item\" data-tg-switch=\"\">Swagger resource <span class=\"status\"></span></div>\n                </div>\n                <div id=\"resources_nav\">\n                </div>\n            </div>\n            \n            <p class=\"changes-disclaimer\">\n                <span class='info' id='api_info'>\n";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.info : depth0), {"name":"if","hash":{},"fn":this.program(1, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
   buffer += "\n                </span>\n\n                <span class='info' id='api_info'>\n";
@@ -456,12 +456,12 @@ this["Handlebars"]["templates"]["main"] = Handlebars.template({"1":function(dept
     + "\n";
   stack1 = helpers['if'].call(depth0, ((stack1 = (depth0 != null ? depth0.info : depth0)) != null ? stack1.version : stack1), {"name":"if","hash":{},"fn":this.program(5, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  return buffer + "            </p>\n        </div>\n    </div>\n</div>\n\n<div id='resources_container'>\n    <ul id='resources'></ul>\n</div>\n";
+  return buffer + "            </p>\n            \n           \n            \n        </div>\n    </div>\n</div>\n\n<div id='resources_container'>\n    <ul id='resources'></ul>\n</div>\n";
 },"useData":true});
 this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   return "deprecated";
   },"3":function(depth0,helpers,partials,data) {
-  return "                <h4>Warning: Deprecated</h4>\n";
+  return "                <div class=\"deprecated-warning\">Warning: Deprecated</div>\n";
   },"5":function(depth0,helpers,partials,data) {
   var stack1, helper, functionType="function", helperMissing=helpers.helperMissing, buffer = "                <div class=\"markdown action-summary\">";
   stack1 = ((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper));
@@ -21290,7 +21290,8 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
   },
 
   render: function () {
-    if (this.model.securityDefinitions) {
+    // not using URL and API token fields
+    /*if (this.model.securityDefinitions) {
       for (var name in this.model.securityDefinitions) {
         var auth = this.model.securityDefinitions[name];
         var button;
@@ -21305,7 +21306,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
           $('.auth_main_container').append(button);
         }
       }
-    }
+    } */
 
     // Render the outer container for resources
     $(this.el).html(Handlebars.templates.main(this.model));
@@ -21471,6 +21472,8 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     this.parentId = this.model.parentId;
     this.nickname = this.model.nickname;
     this.model.encodedParentId = encodeURIComponent(this.parentId);
+    console.log("*** model: " + this.model.nickname + " description: " + this.model.description);
+    console.log("*** responses: " + JSON.stringify(this.model.responses));
     return this;
   },
 
@@ -21574,8 +21577,14 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     if (typeof this.model.responses !== 'undefined') {
       this.model.responseMessages = [];
       ref2 = this.model.responses;
+      
+      console.log("model: " + this.model.nickname + " description: " + this.model.description);
+      console.log("responses: " + JSON.stringify(this.model.responses));
+      
+      
       for (code in ref2) {
         value = ref2[code];
+        console.log("code : " + code);
         schema = null;
         schemaObj = this.model.responses[code].schema;
         if (schemaObj && schemaObj.$ref) {
@@ -21587,7 +21596,8 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
         this.model.responseMessages.push({
           code: code,
           message: value.description,
-          responseModel: schema
+          responseModel: schema,
+          headers: this.model.responses[code].headers
         });
       }
     }

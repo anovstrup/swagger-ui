@@ -15451,16 +15451,17 @@ header.site-header.site-header nav .navbar-brand {
     color: #000;
     padding: 0 15px 0 15px;
     margin: 0;
-    width: 120px;
+    width: 60px; /* changed from 120px */
 }
 header.site-header.site-header nav .navbar-brand a {
-    background: url("../images/senodio.png") center left no-repeat;
+    /*background: url("../images/senodio.png") center left no-repeat; */
+    background: url("../images/infotracker-icon-32x32.png") center left no-repeat;
     /*background-size: 76%;*/
     width: 130px;
     height: 40px;
     display: block;
     margin-top: 5px;
-    background-size: 48%;
+    /*background-size: 48%; */
 }
 header.site-header.site-header nav .navbar-brand img {
     position: relative;

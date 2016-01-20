@@ -89,7 +89,8 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
   },
 
   render: function () {
-    if (this.model.securityDefinitions) {
+    // not using URL and API token fields
+    /*if (this.model.securityDefinitions) {
       for (var name in this.model.securityDefinitions) {
         var auth = this.model.securityDefinitions[name];
         var button;
@@ -104,7 +105,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
           $('.auth_main_container').append(button);
         }
       }
-    }
+    } */
 
     // Render the outer container for resources
     $(this.el).html(Handlebars.templates.main(this.model));

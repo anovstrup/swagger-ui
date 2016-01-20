@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Swagger explorer</title>
+    <title>The InfoTracker REST API</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -75,7 +75,7 @@
 
                     $("[data-toggle='tooltip']").tooltip();
 
-                    addApiKeyAuthorization();
+                    //addApiKeyAuthorization();
                 },
                 onFailure: function (data) {
                     log("Unable to Load SwaggerUI");
@@ -84,6 +84,7 @@
                 sorter: "alpha"
             });
 
+            /* not showing API token fields
             function addApiKeyAuthorization() {
                 var key = encodeURIComponent($('#input_apiKey')[0].value);
                 if (key && key.trim() != "") {
@@ -93,7 +94,7 @@
                 }
             }
 
-            $('#input_apiKey').change(addApiKeyAuthorization);
+            $('#input_apiKey').change(addApiKeyAuthorization); */
             // if you have an apiKey you would like to pre-populate on the page for demonstration purposes...
             /*
              var apiKey = "myApiKeyXXXX123456789";
@@ -207,12 +208,12 @@
                 <button type="button" data-toggle="collapse" data-target="#navbar-collapse" class="navbar-toggle"><span
                         class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span
                         class="icon-bar"></span><span class="icon-bar"></span></button>
-                <h1 class="navbar-brand"><a href="http://swagger.io"><span>swagger explorer</span></a></h1>
+                <h1 class="navbar-brand"><a href="/api"><span>swagger explorer</span></a></h1>
             </div>
             <div id="navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-left">
-                    <li class="li-why"><a href="http://swagger.io" style="font-size: 25px; padding-left: 0px">Swagger
-                        explorer</a></li>
+                    <li class="li-why"><a href="/api" style="font-size: 25px; padding-left: 0px">The InfoTracker REST API
+                        </a></li>
 
                 </ul>
             </div>
