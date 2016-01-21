@@ -42,8 +42,9 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       }
     }
     // Sort operations of each API
-    if (opts.swaggerOptions.operationsSorter) {
+    /*if (opts.swaggerOptions.operationsSorter) {
       sorterOption = opts.swaggerOptions.operationsSorter;
+      
       if (_.isFunction(sorterOption)) {
         sorterFn = sorterOption;
       } else {
@@ -54,8 +55,14 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
           this.model.apisArray[key].operationsArray.sort(sorterFn);
         }
       }
+    }*/
+    // sort operations of each API by method name
+    sorterFn = this.operationsSorters["method"];
+    for (key in this.model.apisArray) {
+       this.model.apisArray[key].operationsArray.sort(sorterFn);
+       this.model.apisArray[key].operationsArray.reverse();
     }
-
+    
     // set up the UI for input
     this.model.auths = [];
 

@@ -101,8 +101,10 @@ window.SwaggerUi = Backbone.Router.extend({
     }
 
     this.options.url = url;
-
+    
     this.api = new SwaggerClient(this.options);
+    
+    console.log("SwaggerUi api " + JSON.stringify(this.api));
 
   },
 
@@ -125,6 +127,15 @@ window.SwaggerUi = Backbone.Router.extend({
   //  so it gets called when SwaggerApi completes loading
   render: function(){
     this.showMessage('Finished Loading Resource Information. Rendering Swagger UI...');
+    
+    for (var i = 0; i < this.api.apisArray.length; i++) {
+        var resource = this.api.apisArray[i];
+        for (var j = 0; j < resource.operationsArray.length; j++) {
+            var operation = resource.operationsArray[j];
+            console.log(i + " " + j + " SwaggerUi model: " + JSON.stringify(operation.responses));
+        }
+    }
+    
     this.mainView = new SwaggerUi.Views.MainView({
       model: this.api,
       el: $('#' + this.dom_id),
@@ -21243,8 +21254,9 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       }
     }
     // Sort operations of each API
-    if (opts.swaggerOptions.operationsSorter) {
+    /*if (opts.swaggerOptions.operationsSorter) {
       sorterOption = opts.swaggerOptions.operationsSorter;
+      
       if (_.isFunction(sorterOption)) {
         sorterFn = sorterOption;
       } else {
@@ -21255,8 +21267,14 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
           this.model.apisArray[key].operationsArray.sort(sorterFn);
         }
       }
+    }*/
+    // sort operations of each API by method name
+    sorterFn = this.operationsSorters["method"];
+    for (key in this.model.apisArray) {
+       this.model.apisArray[key].operationsArray.sort(sorterFn);
+       this.model.apisArray[key].operationsArray.reverse();
     }
-
+    
     // set up the UI for input
     this.model.auths = [];
 
@@ -21577,10 +21595,6 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     if (typeof this.model.responses !== 'undefined') {
       this.model.responseMessages = [];
       ref2 = this.model.responses;
-      
-      console.log("model: " + this.model.nickname + " description: " + this.model.description);
-      console.log("responses: " + JSON.stringify(this.model.responses));
-      
       
       for (code in ref2) {
         value = ref2[code];
@@ -22338,6 +22352,10 @@ SwaggerUi.Views.ResourceView = Backbone.View.extend({
   addOperation: function (operation) {
 
     operation.number = this.number;
+    
+    console.log("ResourceView model: " + operation.nickname + " description: " +operation.description);
+    console.log("ResourceView responses: " + JSON.stringify(operation.responses));
+    
 
     // Render an operation and add it to operations li
     var operationView = new SwaggerUi.Views.OperationView({
