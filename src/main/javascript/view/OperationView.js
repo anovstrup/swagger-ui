@@ -121,27 +121,52 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     if (typeof this.model.responses !== 'undefined') {
       this.model.responseMessages = [];
       ref2 = this.model.responses;
+      
+      var responseForCode = null;
       for (code in ref2) {
         value = ref2[code];
-        schema = null;
+        responseForCode = this.model.responses[code];
+        var rModel = {
+           isParam: false,
+           type: code + " Response",
+           id: this.parentId + '_' + this.nickname + '_' + code
+        };
+        
+        if (responseForCode.examples) {
+           if (responseForCode.examples['application/json']) {
+              var examples = responseForCode.examples['application/json'];
+              rModel.sampleJSON = JSON.stringify(examples, null, 2);
+           } else {
+              rModel.sampleJSON = JSON.stringify(responseForCode.examples, null, 2); 
+           }
+        }
+        if (responseForCode.headers) {
+           rModel.headers = JSON.stringify(responseForCode.headers, null, 2);
+        } 
+        
         schemaObj = this.model.responses[code].schema;
-        if (schemaObj && schemaObj.$ref) {
+        if (schemaObj && schemaObj.$ref) { 
           schema = schemaObj.$ref;
           if (schema.indexOf('#/definitions/') === 0) {
             schema = schema.substring('#/definitions/'.length);
+            if (this.router.api.models.hasOwnProperty(schema)) {
+               rModel.signature = this.router.api.models[schema].getMockSignature();
+            }
           }
-        }
+        } 
+        
         this.model.responseMessages.push({
           code: code,
           message: value.description,
-          responseModel: schema
-        });
+          responseModel: rModel
+        }); 
       }
     }
     if (typeof this.model.responseMessages === 'undefined') {
       this.model.responseMessages = [];
     }
     signatureModel = null;
+    var successResponseModel;
     if (this.model.successResponse) {
       successResponse = this.model.successResponse;
       for (key in successResponse) {
@@ -152,10 +177,21 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
             sampleJSON: JSON.stringify(value.createJSONSample(), void 0, 2),
             isParam: false,
             signature: value.getMockSignature(),
-            type: "Response",
-            id: this.parentId + '_' + this.nickname + '_succes'
+            type:  this.model.successCode + " Response",
+            id: this.parentId + '_' + this.nickname + '_success'
           };
         }
+        if (value.headers) {
+           if (!signatureModel) {
+              signatureModel = {};
+           }
+           signatureModel.headers = JSON.stringify(value.headers, null, 2);
+        }
+        successResponseModel = {
+           code : this.model.successCode, 
+           message: value.description,
+           responseModel: signatureModel,
+        };
       }
     } else if (this.model.responseClassSignature && this.model.responseClassSignature !== 'string') {
       signatureModel = {
@@ -167,7 +203,10 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       };
     }
     $(this.el).html(Handlebars.templates.operation(this.model));
-    if (signatureModel) {
+
+    
+    // model-signature : this.model.responseClassSignature
+   /* if (signatureModel) {
       responseSignatureView = new SwaggerUi.Views.SignatureView({
         model: signatureModel,
         router: this.router,
@@ -179,8 +218,8 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     } else {
       this.model.responseClassSignature = 'string';
       $('.model-signature', $(this.el)).html(this.model.type);
-    }
-
+    } */
+    
     contentTypeModel = {
       isParam: false
     };
@@ -224,7 +263,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       }
     }
 
-
+    if (successResponseModel) {
+       this.addStatusCode(successResponseModel);
+    }
     ref5 = this.model.responseMessages;
     for (q = 0, len4 = ref5.length; q < len4; q++) {
       statusCode = ref5[q];
@@ -236,10 +277,10 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
 
   addBodyModel: function (param) {
     if (param.type === 'file') return;
-
     var bodySample = {
       sampleJSON: param.sampleJSON,
       isParam: true,
+      // TODO: syl - use param.schema 
       signature: param.signature,
       type: "Body",
       id: this.parentId + '_' + this.nickname + '_body'
@@ -265,7 +306,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     // Render status codes
     var statusCodeView = new SwaggerUi.Views.StatusCodeView({
       model: statusCode,
-      tagName: 'tr',
+      tagName: 'div',
       router: this.router
     });
     $('.operation-status', $(this.el)).append(statusCodeView.render().el);

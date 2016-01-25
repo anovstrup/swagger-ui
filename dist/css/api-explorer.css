@@ -366,19 +366,24 @@
     width: auto
 }
 
+.swagger-section .operations .model-signature h4 {
+    font-size: 14px; 
+    font-weight: bold
+}
+
 @media (min-width: 992px) {
     .swagger-section .operations .model-signature h4 {
         /*color: #fff;   commented out because the background color is 100% white for the resources.  used to be #5c666f for 50% of the resources */
         /* commented out to keep h4 style the same 
         text-transform: uppercase;
-        letter-spacing: .08em;
-        font-size: 14px */
+        letter-spacing: .08em; 
+        font-size: 14px; */
     }
 }
 
 @media (min-width: 1400px) {
     .swagger-section .operations .model-signature h4 {
-        padding: 20px 30px
+        /*padding: 20px 30px */
     }
 }
 
@@ -574,7 +579,8 @@
 .swagger-section .operation-status {
     background: #f8f8f9;
     color: #5c666f;
-    min-width: 320px
+    min-width: 320px;
+    padding: 10px;
 }
 
 @media (min-width: 992px) {
@@ -597,7 +603,7 @@
 
 .swagger-section .operation-status td:nth-child(2) {
     color: #8c9299
-}
+} 
 
 .swagger-section .token-generator {
     min-width: 320px;
