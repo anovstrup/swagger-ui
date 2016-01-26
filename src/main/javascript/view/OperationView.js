@@ -143,11 +143,20 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
           if (schema.indexOf('#/definitions/') === 0) {
             schema = schema.substring('#/definitions/'.length);
             if (this.router.api.models.hasOwnProperty(schema)) {
-               rModel.signature = this.router.api.models[schema].getMockSignature();
-               rModel.signature = this.replaceBackTickWithHtml(rModel.signature);
+               var mockSignature = this.router.api.models[schema].getMockSignature();
+               rModel.signature = this.replaceBackTickWithHtml(mockSignature);
             }
           }
         } 
+        if (schemaObj && rModel.signature == null) { // schema type is 'string'
+            schemaObj.description = this.replaceBackTickWithHtml(schemaObj.description);
+            rModel.signature = '<div><span class="propLabels">' + 
+            '<span class="propName propOpt"></span>' + 
+            '<span class="propType" title="' + schemaObj.type + '">' + schemaObj.type + '</span></span>' +
+            '<span class="propDesc">' +
+            schemaObj.description + 
+            '</span></div>';
+         }
         
         value.description = this.replaceBackTickWithHtml(value.description);
         this.model.responseMessages.push({
@@ -176,11 +185,10 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
           
           if (typeof value.createJSONSample === 'function') {
              signatureModel.sampleJSON = JSON.stringify(value.createJSONSample(), void 0, 2);
-             signatureModel.signature = value.getMockSignature();
-             signatureModel.signature = this.replaceBackTickWithHtml(signatureModel.signature);
+             signatureModel.signature = this.replaceBackTickWithHtml(value.getMockSignature());
           } else if (value.examples) {
              this.setSampleJSON(value.examples, signatureModel);
-          }
+          } 
         } 
         if (value.headers) {
            if (!signatureModel) {
