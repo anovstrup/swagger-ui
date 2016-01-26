@@ -150,12 +150,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
         } 
         if (schemaObj && rModel.signature == null) { // schema type is 'string'
             schemaObj.description = this.replaceBackTickWithHtml(schemaObj.description);
-            rModel.signature = '<div><span class="propLabels">' + 
-            '<span class="propName propOpt"></span>' + 
-            '<span class="propType" title="' + schemaObj.type + '">' + schemaObj.type + '</span></span>' +
-            '<span class="propDesc">' +
-            schemaObj.description + 
-            '</span></div>';
+            rModel.signature = this.createHtmlFromSchema(schemaObj.type, schemaObj.description); 
          }
         
         value.description = this.replaceBackTickWithHtml(value.description);
@@ -189,6 +184,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
           } else if (value.examples) {
              this.setSampleJSON(value.examples, signatureModel);
           } 
+          if (value.type == 'string' && signatureModel.signature == null) {
+            signatureModel.signature= this.createHtmlFromSchema(value.type, "");
+          }
         } 
         if (value.headers) {
            if (!signatureModel) {
@@ -282,12 +280,21 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
        }
   },
   
+  createHtmlFromSchema: function(type, description) {
+    return '<div><span class="propLabels">' + 
+    '<span class="propName propOpt"></span>' + 
+    '<span class="propType" title="' + type + '">' + type + '</span></span>' +
+    '<span class="propDesc">' +
+    description + 
+    '</span></div>';  
+  },
+  
   addBodyModel: function (param) {
     if (param.type === 'file') return;
     
     var paramSignature = param.signature;
     if (param.signature == "string" && param.schema) {
-       paramSignature = "<div>string</div>";
+       paramSignature= this.createHtmlFromSchema(param.signature, "");
        if (param.schema.example) {
            param.sampleJSON = "\"" + param.schema.example + "\"" ;
        }
