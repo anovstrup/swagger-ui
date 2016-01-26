@@ -132,14 +132,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
            id: this.parentId + '_' + this.nickname + '_' + code
         };
         
-        if (responseForCode.examples) {
-           if (responseForCode.examples['application/json']) {
-              var examples = responseForCode.examples['application/json'];
-              rModel.sampleJSON = JSON.stringify(examples, null, 2);
-           } else {
-              rModel.sampleJSON = JSON.stringify(responseForCode.examples, null, 2); 
-           }
-        }
+        this.setSampleJSON(responseForCode.examples, rModel);
         if (responseForCode.headers) {
            rModel.headers = JSON.stringify(responseForCode.headers, null, 2);
         } 
@@ -151,10 +144,12 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
             schema = schema.substring('#/definitions/'.length);
             if (this.router.api.models.hasOwnProperty(schema)) {
                rModel.signature = this.router.api.models[schema].getMockSignature();
+               rModel.signature = this.replaceBackTickWithHtml(rModel.signature);
             }
           }
         } 
         
+        value.description = this.replaceBackTickWithHtml(value.description);
         this.model.responseMessages.push({
           code: code,
           message: value.description,
@@ -172,21 +167,29 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       for (key in successResponse) {
         value = successResponse[key];
         this.model.successCode = key;
-        if (typeof value === 'object' && typeof value.createJSONSample === 'function') {
+        if (typeof value === 'object') {
           signatureModel = {
-            sampleJSON: JSON.stringify(value.createJSONSample(), void 0, 2),
             isParam: false,
-            signature: value.getMockSignature(),
             type:  this.model.successCode + " Response",
             id: this.parentId + '_' + this.nickname + '_success'
           };
-        }
+          
+          if (typeof value.createJSONSample === 'function') {
+             signatureModel.sampleJSON = JSON.stringify(value.createJSONSample(), void 0, 2);
+             signatureModel.signature = value.getMockSignature();
+             signatureModel.signature = this.replaceBackTickWithHtml(signatureModel.signature);
+          } else if (value.examples) {
+             this.setSampleJSON(value.examples, signatureModel);
+          }
+        } 
         if (value.headers) {
            if (!signatureModel) {
               signatureModel = {};
            }
            signatureModel.headers = JSON.stringify(value.headers, null, 2);
         }
+        
+        value.description = this.replaceBackTickWithHtml(value.description);
         successResponseModel = {
            code : this.model.successCode, 
            message: value.description,
@@ -204,21 +207,6 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     }
     $(this.el).html(Handlebars.templates.operation(this.model));
 
-    
-    // model-signature : this.model.responseClassSignature
-   /* if (signatureModel) {
-      responseSignatureView = new SwaggerUi.Views.SignatureView({
-        model: signatureModel,
-        router: this.router,
-        tagName: 'div',
-        type: "Response",
-        id: this.parentId + '_' + this.nickname + '_response'
-      });
-      $('.model-signature', $(this.el)).append(responseSignatureView.render().el);
-    } else {
-      this.model.responseClassSignature = 'string';
-      $('.model-signature', $(this.el)).html(this.model.type);
-    } */
     
     contentTypeModel = {
       isParam: false
@@ -274,22 +262,48 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
 
     return this;
   },
-
+  
+  setSampleJSON: function(examples, modelToUpdate) {
+      if (examples) {
+          if (examples['application/json']) {
+             var jsonExamples = examples['application/json'];
+             modelToUpdate.sampleJSON = JSON.stringify(jsonExamples, null, 2);
+          } else {
+             modelToUpdate.sampleJSON = JSON.stringify(examples, null, 2); 
+          }
+       }
+  },
+  
   addBodyModel: function (param) {
     if (param.type === 'file') return;
+    
+    var paramSignature = param.signature;
+    if (param.signature == "string" && param.schema) {
+       paramSignature = "<div>string</div>";
+       if (param.schema.example) {
+           param.sampleJSON = "\"" + param.schema.example + "\"" ;
+       }
+    }
+    
+    paramSignature = this.replaceBackTickWithHtml(paramSignature);
     var bodySample = {
       sampleJSON: param.sampleJSON,
       isParam: true,
-      // TODO: syl - use param.schema 
-      signature: param.signature,
+      signature: paramSignature,
       type: "Body",
       id: this.parentId + '_' + this.nickname + '_body'
     };
     var signatureView = new SwaggerUi.Views.SignatureView({model: bodySample, tagName: 'div'});
     $('.model-signature', $(this.el)).append(signatureView.render().el);
   },
-
-
+  
+  replaceBackTickWithHtml: function (str) {
+     if (str && _.isString(str)) {
+        return str.replace(/`(.*?)`/g, '<code>$1</code>');
+     }
+     return str;
+  },
+  
   addParameter: function (param, consumes) {
     // Render a parameter
     param.consumes = consumes;
