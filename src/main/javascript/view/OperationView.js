@@ -185,7 +185,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
              this.setSampleJSON(value.examples, signatureModel);
           } 
           if (value.type == 'string' && signatureModel.signature == null) {
-            signatureModel.signature= this.createHtmlFromSchema(value.type, "");
+            signatureModel.signature= this.createHtmlFromSchema(value.type, value.schemaDescription);
           }
         } 
         if (value.headers) {
@@ -281,6 +281,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
   },
   
   createHtmlFromSchema: function(type, description) {
+    if (typeof description === 'undefined') {
+      description = '';
+    }
     return '<div><span class="propLabels">' + 
     '<span class="propName propOpt"></span>' + 
     '<span class="propType" title="' + type + '">' + type + '</span></span>' +

@@ -30,7 +30,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
     this.router = opts.router;
 
     // Sort APIs
-    if (opts.swaggerOptions.apisSorter) {
+    /*if (opts.swaggerOptions.apisSorter) {
       sorterOption = opts.swaggerOptions.apisSorter;
       if (_.isFunction(sorterOption)) {
         sorterFn = sorterOption;
@@ -42,7 +42,7 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
       }
     }
     // Sort operations of each API
-    /*if (opts.swaggerOptions.operationsSorter) {
+    if (opts.swaggerOptions.operationsSorter) {
       sorterOption = opts.swaggerOptions.operationsSorter;
       
       if (_.isFunction(sorterOption)) {
@@ -56,6 +56,9 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
         }
       }
     }*/
+    // sort APIs by alpha
+    sorterFn = this.apisSorter["alpha"];
+    this.model.apisArray.sort(sorterFn);
     // sort operations of each API by method name
     sorterFn = this.operationsSorters["method"];
     for (key in this.model.apisArray) {
