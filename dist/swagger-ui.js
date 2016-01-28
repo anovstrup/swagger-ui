@@ -23013,7 +23013,8 @@ SwaggerUi.Views.SidebarHeaderView = Backbone.View.extend({
       tagName: 'div',
       className : 'item',
       attributes: {
-          "data-endpoint": item.parentId + '_' + item.nickname
+          "data-endpoint": item.parentId + '_' + item.nickname,
+          "title" : item.summary
       },
       router: this.router,
       swaggerOptions: this.options.swaggerOptions

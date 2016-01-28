@@ -371,15 +371,21 @@
     font-weight: bold;
     background-color: #5c666f;
     color: white;
+    margin: 0
 }
 
 @media (min-width: 992px) {
     .swagger-section .operations .model-signature h4 {
+        margin: 0 20px
         /*color: #fff;   commented out because the background color is 100% white for the resources.  used to be #5c666f for 50% of the resources */
         /* commented out to keep h4 style the same 
         text-transform: uppercase;
         letter-spacing: .08em; 
         font-size: 14px; */
+    }
+    .swagger-section .operations .model-signature .collapse,
+    .swagger-section .operations .model-signature .collapsing {
+        margin: 0 20px
     }
 }
 
