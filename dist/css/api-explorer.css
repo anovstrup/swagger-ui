@@ -906,6 +906,7 @@
     transition: box-shadow 0 300ms ease;
     min-width: 320px;
     position: relative;
+    font-weight: bold;
 }
 
 @media (min-width: 992px) {
