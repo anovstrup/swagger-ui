@@ -520,6 +520,10 @@
     font-weight: 700
 }
 
+.swagger-section .operations .model-signature .description .deprecated {
+    color: lightgray
+}
+
 @media (min-width: 992px) {
     .swagger-section .operations .model-signature .description .propName {
         display: block
@@ -548,7 +552,11 @@
         width: calc(100% - 200px);
         padding-left: 20px;
         font-size: 12px;
-        line-height: 1.5
+        line-height: 1.5;
+    }
+    
+    .swagger-section .operations .model-signature .description .markdown p {
+        margin: -2px 0
     }
 }
 

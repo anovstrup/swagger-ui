@@ -134,7 +134,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
         
         this.setSampleJSON(responseForCode.examples, rModel);
         if (responseForCode.headers) {
-           rModel.headers = JSON.stringify(responseForCode.headers, null, 2);
+           rModel.headers = this.createHtmlFromHeaders(responseForCode.headers);
         } 
         
         schemaObj = this.model.responses[code].schema;
@@ -143,17 +143,14 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
           if (schema.indexOf('#/definitions/') === 0) {
             schema = schema.substring('#/definitions/'.length);
             if (this.router.api.models.hasOwnProperty(schema)) {
-               var mockSignature = this.router.api.models[schema].getMockSignature();
-               rModel.signature = this.replaceBackTickWithHtml(mockSignature);
+               rModel.signature= this.router.api.models[schema].getMockSignature();
             }
           }
         } 
         if (schemaObj && rModel.signature == null) { // schema type is 'string'
-            schemaObj.description = this.replaceBackTickWithHtml(schemaObj.description);
-            rModel.signature = this.createHtmlFromSchema(schemaObj.type, schemaObj.description); 
+            rModel.signature = this.createHtmlFrom(schemaObj.type, schemaObj.description, ''); 
          }
         
-        value.description = this.replaceBackTickWithHtml(value.description);
         this.model.responseMessages.push({
           code: code,
           message: value.description,
@@ -180,22 +177,21 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
           
           if (typeof value.createJSONSample === 'function') {
              signatureModel.sampleJSON = JSON.stringify(value.createJSONSample(), void 0, 2);
-             signatureModel.signature = this.replaceBackTickWithHtml(value.getMockSignature());
+             signatureModel.signature = value.getMockSignature();
           } else if (value.examples) {
              this.setSampleJSON(value.examples, signatureModel);
           } 
           if (value.type == 'string' && signatureModel.signature == null) {
-            signatureModel.signature= this.createHtmlFromSchema(value.type, value.schemaDescription);
+            signatureModel.signature= this.createHtmlFrom(value.type, value.schemaDescription, '');
           }
         } 
         if (value.headers) {
            if (!signatureModel) {
               signatureModel = {};
            }
-           signatureModel.headers = JSON.stringify(value.headers, null, 2);
+           signatureModel.headers = this.createHtmlFromHeaders(value.headers);
         }
         
-        value.description = this.replaceBackTickWithHtml(value.description);
         successResponseModel = {
            code : this.model.successCode, 
            message: value.description,
@@ -274,22 +270,39 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
           if (examples['application/json']) {
              var jsonExamples = examples['application/json'];
              modelToUpdate.sampleJSON = JSON.stringify(jsonExamples, null, 2);
+          } else if (examples['text/plain']) {
+              var textSample = examples['text/plain'];
+              modelToUpdate.sampleJSON = textSample;
           } else {
              modelToUpdate.sampleJSON = JSON.stringify(examples, null, 2); 
           }
        }
   },
   
-  createHtmlFromSchema: function(type, description) {
-    if (typeof description === 'undefined') {
-      description = '';
-    }
-    return '<div><span class="propLabels">' + 
+  createHtmlFrom: function(type, description, name) {
+    description = typeof description !== 'undefined' ? description : '';
+    name = typeof name !== 'undefined' ? name : '';
+    return '<div><span class="propLabels">' +  name +
     '<span class="propName propOpt"></span>' + 
     '<span class="propType" title="' + type + '">' + type + '</span></span>' +
-    '<span class="propDesc">' +
+    '<span class="propDesc markdown">' +
     description + 
     '</span></div>';  
+  },
+  
+  createHtmlFromHeaders: function(headers) {
+    var html = '';
+    var headerKey;
+    for (headerKey in headers) {
+       html += '<span class="strong objectName"><span class="bracketsIcon">{}</span>' +
+         '<span class="objectNameText">' + headerKey + '</span></span>';
+       var headerValue = headers[headerKey];
+       html += this.createHtmlFrom(headerValue.type, headerValue.description, headerValue.format);
+       if (headerValue['x-example']) {
+         html += this.createHtmlFrom('x-example',  headerValue['x-example'], '');
+       }
+    }
+    return html;
   },
   
   addBodyModel: function (param) {
@@ -297,13 +310,12 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     
     var paramSignature = param.signature;
     if (param.signature == "string" && param.schema) {
-       paramSignature= this.createHtmlFromSchema(param.signature, "");
+       paramSignature= this.createHtmlFrom(param.signature, "");
        if (param.schema.example) {
            param.sampleJSON = "\"" + param.schema.example + "\"" ;
        }
     }
     
-    paramSignature = this.replaceBackTickWithHtml(paramSignature);
     var bodySample = {
       sampleJSON: param.sampleJSON,
       isParam: true,
@@ -313,13 +325,6 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     };
     var signatureView = new SwaggerUi.Views.SignatureView({model: bodySample, tagName: 'div'});
     $('.model-signature', $(this.el)).append(signatureView.render().el);
-  },
-  
-  replaceBackTickWithHtml: function (str) {
-     if (str && _.isString(str)) {
-        return str.replace(/`(.*?)`/g, '<code>$1</code>');
-     }
-     return str;
   },
   
   addParameter: function (param, consumes) {

@@ -17,7 +17,17 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
   },
   operationsSorters: {
     alpha: function (a, b) {
-      return a.path.localeCompare(b.path);
+      var result = a.path.localeCompare(b.path);
+      if (result == 0) {
+         result = a.method.localeCompare(b.method);
+         // reverse order
+         if (result < 0) {
+           result = 1;
+         } else if (result > 0) {
+           result = -1;
+         }
+      }
+      return result;
     },
     method: function (a, b) {
       return a.method.localeCompare(b.method);
@@ -29,41 +39,13 @@ SwaggerUi.Views.MainView = Backbone.View.extend({
 
     this.router = opts.router;
 
-    // Sort APIs
-    /*if (opts.swaggerOptions.apisSorter) {
-      sorterOption = opts.swaggerOptions.apisSorter;
-      if (_.isFunction(sorterOption)) {
-        sorterFn = sorterOption;
-      } else {
-        sorterFn = this.apisSorter[sorterOption];
-      }
-      if (_.isFunction(sorterFn)) {
-        this.model.apisArray.sort(sorterFn);
-      }
-    }
-    // Sort operations of each API
-    if (opts.swaggerOptions.operationsSorter) {
-      sorterOption = opts.swaggerOptions.operationsSorter;
-      
-      if (_.isFunction(sorterOption)) {
-        sorterFn = sorterOption;
-      } else {
-        sorterFn = this.operationsSorters[sorterOption];
-      }
-      if (_.isFunction(sorterFn)) {
-        for (key in this.model.apisArray) {
-          this.model.apisArray[key].operationsArray.sort(sorterFn);
-        }
-      }
-    }*/
     // sort APIs by alpha
     sorterFn = this.apisSorter["alpha"];
     this.model.apisArray.sort(sorterFn);
-    // sort operations of each API by method name
-    sorterFn = this.operationsSorters["method"];
+    // sort operations of each API by path 
+    sorterFn = this.operationsSorters["alpha"];
     for (key in this.model.apisArray) {
        this.model.apisArray[key].operationsArray.sort(sorterFn);
-       this.model.apisArray[key].operationsArray.reverse();
     }
     
     // set up the UI for input
