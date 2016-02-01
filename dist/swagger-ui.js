@@ -22288,13 +22288,14 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     var html = '';
     var headerKey;
     for (headerKey in headers) {
-       html += '<span class="strong objectName"><span class="bracketsIcon">{}</span>' +
-         '<span class="objectNameText">' + headerKey + '</span></span>';
        var headerValue = headers[headerKey];
-       html += this.createHtmlFrom(headerValue.type, headerValue.description, headerValue.format);
+       var description = headerValue.description;
        if (headerValue['x-example']) {
-         html += this.createHtmlFrom('x-example',  headerValue['x-example'], '');
+           description += '<br><strong>Example:</strong> ' + headerValue['x-example'];
        }
+       var name = '<strong>' + headerKey + '</strong>';
+       html += this.createHtmlFrom(headerValue.type, description, name);
+     
     }
     return html;
   },
