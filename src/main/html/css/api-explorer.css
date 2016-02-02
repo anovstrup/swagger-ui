@@ -151,8 +151,6 @@
     font-weight: 400;
     color: #838991;
     font-size: 12px;
-    max-width: 230px;
-    overflow: hidden;
     display: inline-block;
     vertical-align: top;
     text-overflow: ellipsis;
@@ -395,6 +393,16 @@
     }
 }
 
+.swagger-section .parameter-item .samples {
+    margin-top: 10px;
+}
+
+.swagger-section .operations .body-signature h4,
+.swagger-section .operations .body-signature .collapse,
+.swagger-section .operations .body-signature .collapsing {
+    margin: 0
+}
+
 .swagger-section .operations .model-signature .description {
     background: #5c666f;
     padding-bottom: 15px;
@@ -597,15 +605,19 @@
     background: #f8f8f9;
     color: #5c666f;
     min-width: 320px;
-    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #e8eaeb;
+    
 }
 
-.swagger-section .operation-status > div{
-    border: 1px solid #e8eaeb;
-    border-radius: 3px;
+.swagger-section .operation-status > div {
+    border-top: 1px solid #e8eaeb;
     padding-bottom: 5px;
-    margin-bottom: 5px;
 }
+.swagger-section .operation-status > div:nth-child(1) {
+    border-top: 0; 
+}
+
 
 @media (min-width: 992px) {
     .swagger-section .operation-status {
@@ -921,6 +933,10 @@
     .swagger-section .operations h4 {
         box-shadow: none; 
     }
+}
+
+.swagger-section .operations h4:hover {
+    color:#172d37;
 }
 
 .swagger-section .operations .deprecated-warning {

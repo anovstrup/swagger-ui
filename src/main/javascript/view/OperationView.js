@@ -247,9 +247,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     ref4 = this.model.parameters;
     for (p = 0, len3 = ref4.length; p < len3; p++) {
       param = ref4[p];
-      this.addParameter(param, contentTypeModel.consumes);
+      var parameterEl = this.addParameter(param, contentTypeModel.consumes);
       if (param.paramType === 'body' || param.in === 'body') {
-        this.addBodyModel(param)
+        this.addBodyModel(param, parameterEl)
       }
     }
 
@@ -306,7 +306,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     return html;
   },
   
-  addBodyModel: function (param) {
+  addBodyModel: function (param, parentElement) {
     if (param.type === 'file') return;
     
     var paramSignature = param.signature;
@@ -325,7 +325,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       id: this.parentId + '_' + this.nickname + '_body'
     };
     var signatureView = new SwaggerUi.Views.SignatureView({model: bodySample, tagName: 'div'});
-    $('.model-signature', $(this.el)).append(signatureView.render().el);
+    $('.model-signature', $(parentElement)).append(signatureView.render().el).addClass('body-signature');
   },
   
   addParameter: function (param, consumes) {
@@ -337,7 +337,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       className: 'parameter-item',
       readOnly: this.model.isReadOnly
     });
-    $('.operation-params', $(this.el)).append(paramView.render().el);
+    var element = paramView.render().el;
+    $('.operation-params', $(this.el)).append(element);
+    return element;
   },
 
   addStatusCode: function (statusCode) {

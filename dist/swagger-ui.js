@@ -477,7 +477,7 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
     + escapeExpression(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"parentId","hash":{},"data":data}) : helper)))
     + "_"
     + escapeExpression(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"nickname","hash":{},"data":data}) : helper)))
-    + "\">\n                    </div>\n                    \n";
+    + "\">\n                 </div>\n                 \n";
 },"9":function(depth0,helpers,partials,data) {
   return "                        <div class=\"auth\">\n";
   },"11":function(depth0,helpers,partials,data) {
@@ -528,7 +528,7 @@ this["Handlebars"]["templates"]["operation"] = Handlebars.template({"1":function
   buffer += "\n\n            <form accept-charset=\"UTF-8\" class=\"sandbox\">\n\n";
   stack1 = helpers['if'].call(depth0, (depth0 != null ? depth0.parameters : depth0), {"name":"if","hash":{},"fn":this.program(7, data),"inverse":this.noop,"data":data});
   if (stack1 != null) { buffer += stack1; }
-  buffer += "                 <div class=\"samples\">\n                      <span class=\"model-signature\">\n                      </span>\n                 </div>\n\n                <h4 data-control data-toggle=\"collapse\" data-target=\"#test-"
+  buffer += "\n                <h4 data-control data-toggle=\"collapse\" data-target=\"#test-"
     + escapeExpression(((helper = (helper = helpers.parentId || (depth0 != null ? depth0.parentId : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"parentId","hash":{},"data":data}) : helper)))
     + "_"
     + escapeExpression(((helper = (helper = helpers.nickname || (depth0 != null ? depth0.nickname : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"nickname","hash":{},"data":data}) : helper)))
@@ -716,7 +716,7 @@ this["Handlebars"]["templates"]["param_list"] = Handlebars.template({"1":functio
   if (stack1 != null) { buffer += stack1; }
   return buffer + "            <div class=\"markdown\">"
     + escapeExpression(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper)))
-    + "</div>\n        </div>\n    </div>\n</div>\n\n";
+    + "</div>\n        </div>\n        <div class=\"samples\">\n           <span class=\"model-signature\">\n           </span>\n        </div>        \n    </div>\n</div>\n\n";
 },"useData":true});
 this["Handlebars"]["templates"]["param_readonly"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var helper, functionType="function", helperMissing=helpers.helperMissing, escapeExpression=this.escapeExpression;
@@ -798,7 +798,7 @@ this["Handlebars"]["templates"]["param_readonly_required"] = Handlebars.template
   if (stack1 != null) { buffer += stack1; }
   return buffer + "            <div class=\"markdown\">"
     + escapeExpression(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper)))
-    + "</div>\n        </div>\n    </div>\n</div>\n";
+    + "</div>\n        </div>\n        <div class=\"samples\">\n           <span class=\"model-signature\">\n           </span>\n        </div>        \n    </div>\n</div>\n";
 },"useData":true});
 this["Handlebars"]["templates"]["param_required"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
@@ -884,7 +884,7 @@ this["Handlebars"]["templates"]["param_required"] = Handlebars.template({"1":fun
   if (stack1 != null) { buffer += stack1; }
   return buffer + "        <div class=\"markdown\">"
     + escapeExpression(((helper = (helper = helpers.description || (depth0 != null ? depth0.description : depth0)) != null ? helper : helperMissing),(typeof helper === functionType ? helper.call(depth0, {"name":"description","hash":{},"data":data}) : helper)))
-    + "</div>\n    </div>\n</div>\n\n";
+    + "</div>\n    </div>\n    <div class=\"samples\">\n       <span class=\"model-signature\">\n       </span>\n    </div>    \n</div>\n\n";
 },"useData":true});
 this["Handlebars"]["templates"]["parameter_content_type"] = Handlebars.template({"1":function(depth0,helpers,partials,data) {
   var stack1, buffer = "";
@@ -22241,9 +22241,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     ref4 = this.model.parameters;
     for (p = 0, len3 = ref4.length; p < len3; p++) {
       param = ref4[p];
-      this.addParameter(param, contentTypeModel.consumes);
+      var parameterEl = this.addParameter(param, contentTypeModel.consumes);
       if (param.paramType === 'body' || param.in === 'body') {
-        this.addBodyModel(param)
+        this.addBodyModel(param, parameterEl)
       }
     }
 
@@ -22300,7 +22300,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
     return html;
   },
   
-  addBodyModel: function (param) {
+  addBodyModel: function (param, parentElement) {
     if (param.type === 'file') return;
     
     var paramSignature = param.signature;
@@ -22319,7 +22319,7 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       id: this.parentId + '_' + this.nickname + '_body'
     };
     var signatureView = new SwaggerUi.Views.SignatureView({model: bodySample, tagName: 'div'});
-    $('.model-signature', $(this.el)).append(signatureView.render().el);
+    $('.model-signature', $(parentElement)).append(signatureView.render().el).addClass('body-signature');
   },
   
   addParameter: function (param, consumes) {
@@ -22331,7 +22331,9 @@ SwaggerUi.Views.OperationView = Backbone.View.extend({
       className: 'parameter-item',
       readOnly: this.model.isReadOnly
     });
-    $('.operation-params', $(this.el)).append(paramView.render().el);
+    var element = paramView.render().el;
+    $('.operation-params', $(this.el)).append(element);
+    return element;
   },
 
   addStatusCode: function (statusCode) {
