@@ -482,7 +482,7 @@
     position: relative;
     top: -1px;
     left: 5px;
-    max-width: 120px;
+    /*max-width: 120px; */
     text-overflow: ellipsis;
     overflow: hidden
 }
@@ -521,7 +521,8 @@
 }
 
 .swagger-section .operations .model-signature .description .deprecated {
-    color: lightgray
+    color: lightgray;
+    text-decoration: line-through
 }
 
 @media (min-width: 992px) {
@@ -599,6 +600,13 @@
     padding: 10px;
 }
 
+.swagger-section .operation-status > div{
+    border: 1px solid #e8eaeb;
+    border-radius: 3px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
 @media (min-width: 992px) {
     .swagger-section .operation-status {
         background: 0 0
@@ -610,11 +618,11 @@
     vertical-align: middle;
     border-bottom: 1px solid #e8eaeb;
     line-height: 1.4;
-    padding: 15px
+    /*padding: 15px */
 }
 
 .swagger-section .operation-status td:nth-child(1) {
-    padding: 20px
+    padding: 5px 10px
 }
 
 .swagger-section .operation-status td:nth-child(2) {
@@ -898,7 +906,7 @@
 
 .swagger-section .operations h4 {
     font-size: 16px;
-    padding: 20px;
+    padding: 20px 20px 20px 40px;
     margin: 0;
     color: #325d72;
     cursor: pointer;
@@ -912,7 +920,6 @@
 @media (min-width: 992px) {
     .swagger-section .operations h4 {
         box-shadow: none; 
-        cursor: default;
     }
 }
 
@@ -923,7 +930,7 @@
     color: #5c666f;
 }
 
-.swagger-section .operations h4:after {
+.swagger-section .operations h4:before {
     content: "\E17B";
     font-family: budicon-font !important;
     font-style: normal !important;
@@ -937,7 +944,7 @@
     font-size: 12px;
     position: absolute;
     top: 25px;
-    right: 20px;
+    left: 20px;
     opacity: .7
 }
 
@@ -974,7 +981,7 @@
 }
 */
 
-.swagger-section .operations h4:not(.collapsed):after {
+.swagger-section .operations h4:not(.collapsed):before {
     content: "\E17A";
     font-family: budicon-font !important;
     font-style: normal !important;
@@ -1817,7 +1824,7 @@ body {
 .swagger-section .swagger-ui-wrap .markdown ol li, .swagger-section .swagger-ui-wrap .markdown ul li {
     padding: 3px 0;
     line-height: 1.4em;
-    color: #333
+    /*color: #333 */
 }
 
 .swagger-section .swagger-ui-wrap form.formtastic fieldset.inputs ol li.numeric input, .swagger-section .swagger-ui-wrap form.formtastic fieldset.inputs ol li.string input, .swagger-section .swagger-ui-wrap form.formtastic fieldset.inputs ol li.url input {
