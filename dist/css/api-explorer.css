@@ -641,7 +641,7 @@
 }
 
 .swagger-section .operation-status td:nth-child(2) {
-    color: #8c9299
+    color: gray
 } 
 
 .swagger-section .token-generator {

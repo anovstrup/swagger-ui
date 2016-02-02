@@ -214,9 +214,28 @@ window.SwaggerUi = Backbone.Router.extend({
     $('.markdown').each(function(){
       $(this).html(marked($(this).html()));
     });
-  }
-
+    
+    $('a').each(function(){
+      var href = $(this).attr('href');
+      if (href) {
+        href = href.replace("#!/", "").replace("/", "_"); 
+        // check if element with expected data-endpoint 
+        var element = $('div').find("[data-endpoint='" + href + "']");
+        if (element.length > 0) {
+           var targetElement = element.first();
+           $(this).click(function() {
+              // simulate clicking on the target div element, when clicking on this anchor
+              $(targetElement).trigger("click");
+              return false;
+           });
+        }
+      }
+    });
+    
+    
+  },
 });
+
 
 window.SwaggerUi.Views = {};
 
