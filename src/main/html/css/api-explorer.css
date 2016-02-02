@@ -392,6 +392,9 @@
         /*padding: 20px 30px */
     }
 }
+.swagger-section .operations .model-signature h4:hover {
+    color: white;
+}
 
 .swagger-section .parameter-item .samples {
     margin-top: 10px;
