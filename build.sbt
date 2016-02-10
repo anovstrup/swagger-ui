@@ -8,7 +8,8 @@ version := "2.1.2-SNAPSHOT"
 
 crossPaths := false
 
-gulp := { "C:\\Users\\sarahlee\\AppData\\Roaming\\npm\\gulp.cmd".! }
+// make sure that gulpCommand is set appropriately (see local.sbt.example)
+gulp := { gulpCommand.value.! }
 
 packageBin in Compile <<= (packageBin in Compile) dependsOn gulp
 

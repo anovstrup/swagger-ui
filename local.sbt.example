@@ -9,3 +9,6 @@ shaiIvyRepo := {
   baseShaiIvyRepo as(username.value, keyFile)
 }
 
+publishTo := Some(shaiIvyRepo)
+
+gulpCommand := "gulp"
